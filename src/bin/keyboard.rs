@@ -22,7 +22,7 @@ type UsbClass = keyberon::Class<'static, UsbBusType, ()>;
 type UsbDevice = usb_device::device::UsbDevice<'static, UsbBusType>;
 
 const LCTL_ESC: Action<()> = HoldTap {
-    timeout: 160,
+    timeout: 200,
     tap_hold_interval: 0,
     config: HoldTapConfig::Default,
     hold: &k(LCtrl),
