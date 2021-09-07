@@ -2,7 +2,6 @@
 .#*
 .gdb_history
 /target
-Cargo.lock
 
 # editor files
 .vscode/*
