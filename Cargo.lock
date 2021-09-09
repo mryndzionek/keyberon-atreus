@@ -77,12 +77,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "byte-slice-cast"
-version = "0.3.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b0a5e3906bcbf133e33c1d4d95afc664ad37fbdb9f6568d8043e7ea8c27d93d3"
-
-[[package]]
 name = "byteorder"
 version = "1.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -231,33 +225,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "display-interface"
-version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7517c040926d7b02b111884aa089177db80878533127f7c1b480d852c5fb4112"
-
-[[package]]
-name = "display-interface-i2c"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4895cd4e54e5536ef370d7f1eec787aad8275dd8ad15815aebfa71dd847b4ebf"
-dependencies = [
- "display-interface",
- "embedded-hal",
-]
-
-[[package]]
-name = "display-interface-spi"
-version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "489378ad054862146fbd1f09f51d585ccbe4bd1e2feadcda2a13ac33f840e1a5"
-dependencies = [
- "byte-slice-cast",
- "display-interface",
- "embedded-hal",
-]
-
-[[package]]
 name = "either"
 version = "1.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -279,15 +246,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "46c8c02e4347a0267ca60813c952017f4c5948c232474c6010a381a337f1bda4"
 dependencies = [
  "stable_deref_trait",
-]
-
-[[package]]
-name = "embedded-graphics"
-version = "0.6.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "40a69991ceb896bd4810a0cf2bcc46fc94b7860573c71f965d8e5b3d66942fed"
-dependencies = [
- "byteorder",
 ]
 
 [[package]]
@@ -407,11 +365,9 @@ dependencies = [
  "cortex-m-rtic",
  "defmt",
  "defmt-rtt",
- "embedded-graphics",
- "heapless 0.6.1",
+ "heapless 0.7.5",
  "keyberon",
  "panic-probe",
- "ssd1306",
  "stm32f1xx-hal",
  "usb-device",
 ]
@@ -555,20 +511,6 @@ name = "semver-parser"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "388a1df253eca08550bef6c72392cfe7c30914bf41df5269b68cbd6ff8f570a3"
-
-[[package]]
-name = "ssd1306"
-version = "0.5.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "58d8a4c2bcc3a19178ba57ec09dd96a0da7a7df20fcf7422bf4aa88351e65805"
-dependencies = [
- "display-interface",
- "display-interface-i2c",
- "display-interface-spi",
- "embedded-graphics",
- "embedded-hal",
- "generic-array 0.14.4",
-]
 
 [[package]]
 name = "stable_deref_trait"
