@@ -1,5 +1,7 @@
 # `keyberon-atreus`
 
+[![Rust](https://github.com/mryndzionek/keyberon-atreus/actions/workflows/rust.yml/badge.svg)](https://github.com/mryndzionek/keyberon-atreus/actions/workflows/rust.yml)
+
 > [Keyberon](https://github.com/TeXitoi/keyberon) configuration
 for my Atreus-like keyboards ([generator](https://github.com/mryndzionek/kbdSVGGen),
 [first build](https://gist.github.com/mryndzionek/0fb397242e55262d831ccf3e8f38dcb0))
