@@ -3,7 +3,7 @@
 
 use keyberon_atreus as _;
 
-use keyberon::action::{k, l, m, Action, Action::*, HoldTapConfig};
+use keyberon::action::{d, k, l, m, Action, Action::*, HoldTapConfig};
 use keyberon::debounce::Debouncer;
 use keyberon::key_code::KeyCode::*;
 use keyberon::key_code::{KbHidReport, KeyCode};
@@ -50,9 +50,9 @@ const PIPE: Action<()> = m(&[LShift, Bslash]);
 pub const LAYERS: keyberon::layout::Layers<()> = &[
     &[
         &[k(Tab),    k(Q),     k(W),    k(E),    k(R), k(T),     Trans,    Trans,     k(Y),      k(U), k(I),     k(O),    k(P),      k(Minus)],
-        &[LCTL_ESC,  k(A),     k(S),    k(D),    k(F), k(G),     Trans,    Trans,     k(H),      k(J), k(K),     k(L),    k(SColon), k(Quote)],
+        &[LCTL_ESC,     k(A),     k(S),    k(D),    k(F), k(G),     Trans,    Trans,     k(H),      k(J), k(K),     k(L),    k(SColon), k(Quote)],
         &[k(LShift), k(Z),     k(X),    k(C),    k(V), k(B),     l(3),     k(RShift), k(N),      k(M), k(Comma), k(Dot),  k(Slash),  k(Enter)],
-        &[k(Grave),  k(LCtrl), k(LAlt), k(LGui), l(1), k(Space), k(RAlt),  k(RAlt),   k(BSpace), l(2), k(Left),  k(Down), k(Up),     k(Right)],
+        &[k(Grave),  k(LCtrl), k(LAlt), k(LGui), l(1), k(Space), d(4),  k(RAlt),   k(BSpace), l(2), k(Left),  k(Down), k(Up),     k(Right)],
     ],
     &[
         &[TILD,      EXLM,  AT,    HASH,  DLR,    PERC,   Trans, Trans, CIRC,   AMPR,   ASTR,             LPRN,            RPRN,          k(Delete)],
@@ -71,6 +71,12 @@ pub const LAYERS: keyberon::layout::Layers<()> = &[
         &[k(Delete), k(F1), k(F2), k(F3), k(F4),  k(F5),  Trans, Trans, k(F6),      k(Left), k(Down),          k(Right),            RCBR,          PIPE],
         &[Trans,     k(F7), k(F8), k(F9), k(F10), k(F11), Trans, Trans, k(F12),     k(End),  Trans,            Trans,           Trans,         Trans],
         &[Trans,     Trans, Trans, Trans, Trans,  Trans,  Trans, Trans, k(PgDown),  k(PgUp), k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
+    ],
+    &[
+        &[k(LCtrl), k(RShift), k(LAlt), Trans,              Trans,              Trans,    Trans, Trans, Trans, Trans, Trans, Trans, Trans, Trans],
+        &[LCTL_ESC,    Trans,         Trans,      m(&[LCtrl, D]), k(S),            k(N), Trans, Trans, Trans, Trans, Trans, Trans, Trans, Trans],
+        &[Trans,       Trans,         Trans,      k(Delete),       m(&[LCtrl, G]), Trans,    m(&[LShift, LCtrl, Z]), Trans, Trans, Trans, Trans, Trans, Trans, Trans],
+        &[Trans,       Trans,         Trans,      Trans,              Trans, m(&[LCtrl, Z]), d(0), Trans, Trans, Trans, Trans, Trans, Trans, Trans],
     ],
 ];
 
@@ -105,9 +111,7 @@ const APP: () = {
         let rcc = c.device.RCC.constrain();
 
         // set 0x424C in DR10 for dfu on reset
-        let bkp = rcc
-            .bkp
-            .constrain(c.device.BKP, &mut c.device.PWR);
+        let bkp = rcc.bkp.constrain(c.device.BKP, &mut c.device.PWR);
         bkp.write_data_register_low(9, 0x424C);
 
         let clocks = rcc
