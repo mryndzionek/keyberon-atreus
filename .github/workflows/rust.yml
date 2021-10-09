@@ -1,0 +1,51 @@
+name: Rust
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          components: llvm-tools-preview
+          target: thumbv7m-none-eabi
+      - name: cache
+        id: cache-target
+        uses: actions/cache@v2
+        with:
+          path: target
+          key: ${{ runner.os }}-thumbv7m-none-eabi
+
+      - name: Build
+        run: |
+          cargo install cargo-binutils flip-link
+          cargo build --bin keyboard --target=thumbv7m-none-eabi
+          cargo objcopy --bin keyboard --release --target=thumbv7m-none-eabi -- -O binary keyboard.bin
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: keyboard-bin
+          path: keyboard.bin
+
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: thumbv7m-none-eabi
+      - name: Check fmt
+        run: find -name '*.rs' | xargs rustfmt --check --edition 2018
+
+
