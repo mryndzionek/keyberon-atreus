@@ -29,6 +29,14 @@ const LCTL_ESC: Action<()> = HoldTap {
     tap: &k(Escape),
 };
 
+const RALT_EDIT: Action<()> = HoldTap {
+    timeout: 200,
+    tap_hold_interval: 0,
+    config: HoldTapConfig::Default,
+    hold: &k(RAlt),
+    tap: &d(4),
+};
+
 const TILD: Action<()> = m(&[LShift, Grave]);
 const EXLM: Action<()> = m(&[LShift, Kb1]);
 const AT: Action<()> = m(&[LShift, Kb2]);
@@ -51,8 +59,8 @@ pub const LAYERS: keyberon::layout::Layers<()> = &[
     &[
         &[k(Tab),    k(Q),     k(W),    k(E),    k(R), k(T),     Trans,    Trans,     k(Y),      k(U), k(I),     k(O),    k(P),      k(Minus)],
         &[LCTL_ESC,     k(A),     k(S),    k(D),    k(F), k(G),     Trans,    Trans,     k(H),      k(J), k(K),     k(L),    k(SColon), k(Quote)],
-        &[k(LShift), k(Z),     k(X),    k(C),    k(V), k(B),     l(3),     k(RShift), k(N),      k(M), k(Comma), k(Dot),  k(Slash),  k(Enter)],
-        &[k(Grave),  k(LCtrl), k(LAlt), k(LGui), l(1), k(Space), d(4),  k(RAlt),   k(BSpace), l(2), k(Left),  k(Down), k(Up),     k(Right)],
+        &[k(LShift), k(Z),     k(X),    k(C),    k(V), k(B),     l(3),   k(RShift), k(N),      k(M), k(Comma), k(Dot),  k(Slash),  k(Enter)],
+        &[k(Grave),  k(LCtrl), k(LAlt), k(LGui), l(1), k(Space), RALT_EDIT,  k(RAlt),   k(BSpace), l(2), k(Left),  k(Down), k(Up),     k(Right)],
     ],
     &[
         &[TILD,      EXLM,  AT,    HASH,  DLR,    PERC,   Trans, Trans, CIRC,   AMPR,   ASTR,             LPRN,            RPRN,          k(Delete)],
