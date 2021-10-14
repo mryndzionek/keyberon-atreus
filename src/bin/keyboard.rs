@@ -57,10 +57,10 @@ const PIPE: Action<()> = m(&[LShift, Bslash]);
 #[rustfmt::skip]
 pub const LAYERS: keyberon::layout::Layers<()> = &[
     &[
-        &[k(Tab),    k(Q),     k(W),    k(E),    k(R), k(T),     Trans,    Trans,     k(Y),      k(U), k(I),     k(O),    k(P),      k(Minus)],
-        &[LCTL_ESC,     k(A),     k(S),    k(D),    k(F), k(G),     Trans,    Trans,     k(H),      k(J), k(K),     k(L),    k(SColon), k(Quote)],
-        &[k(LShift), k(Z),     k(X),    k(C),    k(V), k(B),     l(3),   k(RShift), k(N),      k(M), k(Comma), k(Dot),  k(Slash),  k(Enter)],
-        &[k(Grave),  k(LCtrl), k(LAlt), k(LGui), l(1), k(Space), RALT_EDIT,  k(RAlt),   k(BSpace), l(2), k(Left),  k(Down), k(Up),     k(Right)],
+        &[k(Tab),    k(Q),     k(W),    k(E),    k(R), k(T),     Trans,     Trans,     k(Y),      k(U), k(I),     k(O),    k(P),      k(Minus)],
+        &[LCTL_ESC,  k(A),     k(S),    k(D),    k(F), k(G),     Trans,     Trans,     k(H),      k(J), k(K),     k(L),    k(SColon), k(Quote)],
+        &[k(LShift), k(Z),     k(X),    k(C),    k(V), k(B),     l(3),      k(RShift), k(N),      k(M), k(Comma), k(Dot),  k(Slash),  k(Enter)],
+        &[k(Grave),  k(LCtrl), k(LAlt), k(LGui), l(1), k(Space), RALT_EDIT, k(RAlt),   k(BSpace), l(2), k(Left),  k(Down), k(Up),     k(Right)],
     ],
     &[
         &[TILD,      EXLM,  AT,    HASH,  DLR,    PERC,   Trans, Trans, CIRC,   AMPR,   ASTR,             LPRN,            RPRN,          k(Delete)],
@@ -75,16 +75,16 @@ pub const LAYERS: keyberon::layout::Layers<()> = &[
         &[Trans,     Trans,  Trans,  Trans,  Trans,  Trans,  Trans, Trans, Trans,  Trans,    k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
     ],
     &[
-        &[TILD,      EXLM,  AT,    HASH,  DLR,    PERC,   Trans, Trans, CIRC,       AMPR,    k(Up),             LPRN,            RPRN,          k(Delete)],
-        &[k(Delete), k(F1), k(F2), k(F3), k(F4),  k(F5),  Trans, Trans, k(F6),      k(Left), k(Down),          k(Right),            RCBR,          PIPE],
+        &[TILD,      EXLM,  AT,    HASH,  DLR,    PERC,   Trans, Trans, CIRC,       AMPR,    k(Up),            LPRN,           RPRN,           k(Delete)],
+        &[k(Delete), k(F1), k(F2), k(F3), k(F4),  k(F5),  Trans, Trans, k(F6),      k(Left), k(Down),          k(Right),        RCBR,          PIPE],
         &[Trans,     k(F7), k(F8), k(F9), k(F10), k(F11), Trans, Trans, k(F12),     k(End),  Trans,            Trans,           Trans,         Trans],
         &[Trans,     Trans, Trans, Trans, Trans,  Trans,  Trans, Trans, k(PgDown),  k(PgUp), k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
     ],
     &[
-        &[k(LCtrl), k(RShift), k(LAlt), Trans,              Trans,              Trans,    Trans, Trans, Trans, Trans, Trans, Trans, Trans, Trans],
-        &[LCTL_ESC,    Trans,         Trans,      m(&[LCtrl, D]), k(S),            k(N), Trans, Trans, Trans, Trans, Trans, Trans, Trans, Trans],
-        &[Trans,       Trans,         Trans,      k(Delete),       m(&[LCtrl, G]), Trans,    m(&[LShift, LCtrl, Z]), Trans, Trans, Trans, Trans, Trans, Trans, Trans],
-        &[Trans,       Trans,         Trans,      Trans,              Trans, m(&[LCtrl, Z]), d(0), Trans, Trans, Trans, Trans, Trans, Trans, Trans],
+        &[k(LCtrl), k(RShift), k(LAlt), Trans,          Trans,          Trans,                Trans,                  Trans, Trans, Trans, Trans, Trans, Trans, Trans],
+        &[LCTL_ESC, Trans,     Trans,   m(&[LCtrl, D]), k(S),           k(N),                 Trans,                  Trans, Trans, Trans, Trans, Trans, Trans, Trans],
+        &[Trans,    Trans,     Trans,   k(Delete),      m(&[LCtrl, G]), Trans,                m(&[LShift, LCtrl, Z]), Trans, Trans, Trans, Trans, Trans, Trans, Trans],
+        &[Trans,    Trans,     Trans,   Trans,          Trans,          m(&[LCtrl, Z]),       d(0),                   Trans, Trans, Trans, Trans, Trans, Trans, Trans],
     ],
 ];
 
