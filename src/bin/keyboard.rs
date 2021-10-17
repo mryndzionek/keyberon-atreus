@@ -81,10 +81,10 @@ pub const LAYERS: keyberon::layout::Layers<()> = &[
         &[Trans,     Trans, Trans, Trans, Trans,  Trans,  Trans, Trans, k(PgDown),  k(PgUp), k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
     ],
     &[
-        &[k(LCtrl), k(RShift), k(LAlt), Trans,          Trans,          Trans,                Trans,                  Trans, Trans, Trans, Trans, Trans, Trans, Trans],
-        &[LCTL_ESC, Trans,     Trans,   m(&[LCtrl, D]), k(S),           k(N),                 Trans,                  Trans, Trans, Trans, Trans, Trans, Trans, Trans],
-        &[Trans,    Trans,     Trans,   k(Delete),      m(&[LCtrl, G]), Trans,                m(&[LShift, LCtrl, Z]), Trans, Trans, Trans, Trans, Trans, Trans, Trans],
-        &[Trans,    Trans,     Trans,   Trans,          Trans,          m(&[LCtrl, Z]),       d(0),                   Trans, Trans, Trans, Trans, Trans, Trans, Trans],
+        &[Trans,    k(LCtrl),  k(RShift), k(LAlt),        k(D),           k(B),                 Trans,                  Trans, Trans, Trans, Trans, Trans, Trans, Trans],
+        &[LCTL_ESC, Trans,     Trans,     m(&[LCtrl, D]), k(S),           k(N),                 Trans,                  Trans, Trans, Trans, Trans, Trans, Trans, Trans],
+        &[Trans,    Trans,     Trans,     k(Delete),      m(&[LCtrl, G]), Trans,                m(&[LShift, LCtrl, Z]), Trans, Trans, Trans, Trans, Trans, Trans, Trans],
+        &[Trans,    Trans,     Trans,     Trans,          Trans,          m(&[LCtrl, Z]),       d(0),                   Trans, Trans, Trans, Trans, Trans, Trans, Trans],
     ],
 ];
 
