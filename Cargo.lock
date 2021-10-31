@@ -388,7 +388,7 @@ dependencies = [
 [[package]]
 name = "keyberon"
 version = "0.2.0"
-source = "git+https://github.com/TeXitoi/keyberon#07bb931ed2223b4b0cb35d9d7496d176c76abac1"
+source = "git+https://github.com/TeXitoi/keyberon?rev=5e2ae6e#5e2ae6e59db9ff75668ec93046ae4a57385813c3"
 dependencies = [
  "arraydeque",
  "either",
@@ -417,7 +417,7 @@ dependencies = [
 [[package]]
 name = "keyberon-macros"
 version = "0.1.0"
-source = "git+https://github.com/TeXitoi/keyberon#07bb931ed2223b4b0cb35d9d7496d176c76abac1"
+source = "git+https://github.com/TeXitoi/keyberon?rev=5e2ae6e#5e2ae6e59db9ff75668ec93046ae4a57385813c3"
 dependencies = [
  "proc-macro-error",
  "proc-macro2",
@@ -496,9 +496,9 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.29"
+version = "1.0.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b9f5105d4fdaab20335ca9565e106a5d9b82b6219b5ba735731124ac6711d23d"
+checksum = "ba508cc11742c0dc5c1659771673afbab7a0efab23aa17e854cbab0837ed0b43"
 dependencies = [
  "unicode-xid",
 ]
@@ -659,7 +659,7 @@ dependencies = [
 [[package]]
 name = "stm32f1xx-hal"
 version = "0.7.0"
-source = "git+https://github.com/stm32-rs/stm32f1xx-hal#0b3dba9ca6ff8600d615ffd22648f80523da24c6"
+source = "git+https://github.com/stm32-rs/stm32f1xx-hal?rev=25702c0#25702c0f1a3a69e6a79f379dcbe689a603c41195"
 dependencies = [
  "bxcan",
  "cast",
@@ -675,9 +675,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "1.0.80"
+version = "1.0.81"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d010a1623fbd906d51d650a9916aaefc05ffa0e4053ff7fe601167f3e715d194"
+checksum = "f2afee18b8beb5a596ecb4a2dce128c719b4ba399d34126b9e4396e3f9860966"
 dependencies = [
  "proc-macro2",
  "quote",
