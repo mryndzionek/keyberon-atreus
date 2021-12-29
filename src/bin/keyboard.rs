@@ -252,7 +252,7 @@ mod app {
 
     fn send_report(
         iter: impl Iterator<Item = KeyCode>,
-        usb_class: &mut shared_resources::usb_class<'_>,
+        usb_class: &mut shared_resources::usb_class_that_needs_to_be_locked<'_>,
     ) {
         use rtic::Mutex;
         let report: KbHidReport = iter.collect();
