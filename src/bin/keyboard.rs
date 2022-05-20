@@ -10,7 +10,7 @@ mod app {
     use keyberon::key_code::KeyCode::*;
     use keyberon::key_code::{KbHidReport, KeyCode};
     use keyberon::layout::Layout;
-    use keyberon::matrix::{Matrix, PressedKeys};
+    use keyberon::matrix::Matrix;
     use keyberon_atreus as _;
 
     use stm32f1xx_hal::gpio::{gpioc::PC13, EPin, Input, Output, PullUp, PushPull};
@@ -59,36 +59,36 @@ mod app {
     const PIPE: Action<()> = m(&[LShift, Bslash]);
 
     #[rustfmt::skip]
-    pub const LAYERS: keyberon::layout::Layers<()> = &[
-        &[
-            &[k(Tab),    k(Q),     k(W),    k(E),    k(R), k(T),     Trans,     Trans,     k(Y),      k(U), k(I),     k(O),    k(P),      k(Minus)],
-            &[LCTL_ESC,  k(A),     k(S),    k(D),    k(F), k(G),     Trans,     Trans,     k(H),      k(J), k(K),     k(L),    k(SColon), k(Quote)],
-            &[k(LShift), k(Z),     k(X),    k(C),    k(V), k(B),     l(3),      k(RShift), k(N),      k(M), k(Comma), k(Dot),  k(Slash),  k(Enter)],
-            &[k(Grave),  k(LCtrl), k(LAlt), k(LGui), l(1), k(Space), RALT_EDIT, k(RAlt),   k(BSpace), l(2), k(Left),  k(Down), k(Up),     k(Right)],
+    pub const LAYERS: keyberon::layout::Layers<14, 4, 5, ()> = [
+        [
+            [k(Tab),    k(Q),     k(W),    k(E),    k(R), k(T),     Trans,     Trans,     k(Y),      k(U), k(I),     k(O),    k(P),      k(Minus)],
+            [LCTL_ESC,  k(A),     k(S),    k(D),    k(F), k(G),     Trans,     Trans,     k(H),      k(J), k(K),     k(L),    k(SColon), k(Quote)],
+            [k(LShift), k(Z),     k(X),    k(C),    k(V), k(B),     l(3),      k(RShift), k(N),      k(M), k(Comma), k(Dot),  k(Slash),  k(Enter)],
+            [k(Grave),  k(LCtrl), k(LAlt), k(LGui), l(1), k(Space), RALT_EDIT, k(RAlt),   k(BSpace), l(2), k(Left),  k(Down), k(Up),     k(Right)],
         ],
-        &[
-            &[TILD,      EXLM,  AT,    HASH,  DLR,    PERC,   Trans, Trans, CIRC,   AMPR,   ASTR,             LPRN,            RPRN,          k(Delete)],
-            &[k(Delete), k(F1), k(F2), k(F3), k(F4),  k(F5),  Trans, Trans, k(F6),  UNDS,   PLUS,             LCBR,            RCBR,          PIPE],
-            &[Trans,     k(F7), k(F8), k(F9), k(F10), k(F11), Trans, Trans, k(F12), k(End), Trans,            Trans,           Trans,         Trans],
-            &[Trans,     Trans, Trans, Trans, Trans,  Trans,  Trans, Trans, Trans,  Trans,  k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
+        [
+            [TILD,      EXLM,  AT,    HASH,  DLR,    PERC,   Trans, Trans, CIRC,   AMPR,   ASTR,             LPRN,            RPRN,          k(Delete)],
+            [k(Delete), k(F1), k(F2), k(F3), k(F4),  k(F5),  Trans, Trans, k(F6),  UNDS,   PLUS,             LCBR,            RCBR,          PIPE],
+            [Trans,     k(F7), k(F8), k(F9), k(F10), k(F11), Trans, Trans, k(F12), k(End), Trans,            Trans,           Trans,         Trans],
+            [Trans,     Trans, Trans, Trans, Trans,  Trans,  Trans, Trans, Trans,  Trans,  k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
         ],
-        &[
-            &[k(Grave),  k(Kb1), k(Kb2), k(Kb3), k(Kb4), k(Kb5), Trans, Trans, k(Kb6), k(Kb7),   k(Kb8),           k(Kb9),          k(Kb0),        k(Delete)],
-            &[k(Delete), k(F1),  k(F2),  k(F3),  k(F4),  k(F5),  Trans, Trans, k(F6),  k(Minus), k(Equal),         k(LBracket),     k(RBracket),   k(Bslash)],
-            &[Trans,     k(F7),  k(F8),  k(F9),  k(F10), k(F11), Trans, Trans, k(F12), k(End),   Trans,            Trans,           Trans,         Trans],
-            &[Trans,     Trans,  Trans,  Trans,  Trans,  Trans,  Trans, Trans, Trans,  Trans,    k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
+        [
+            [k(Grave),  k(Kb1), k(Kb2), k(Kb3), k(Kb4), k(Kb5), Trans, Trans, k(Kb6), k(Kb7),   k(Kb8),           k(Kb9),          k(Kb0),        k(Delete)],
+            [k(Delete), k(F1),  k(F2),  k(F3),  k(F4),  k(F5),  Trans, Trans, k(F6),  k(Minus), k(Equal),         k(LBracket),     k(RBracket),   k(Bslash)],
+            [Trans,     k(F7),  k(F8),  k(F9),  k(F10), k(F11), Trans, Trans, k(F12), k(End),   Trans,            Trans,           Trans,         Trans],
+            [Trans,     Trans,  Trans,  Trans,  Trans,  Trans,  Trans, Trans, Trans,  Trans,    k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
         ],
-        &[
-            &[TILD,      EXLM,  AT,    HASH,  DLR,    PERC,   Trans, Trans, CIRC,       AMPR,    k(Up),            LPRN,           RPRN,           k(Delete)],
-            &[k(Delete), k(F1), k(F2), k(F3), k(F4),  k(F5),  Trans, Trans, k(F6),      k(Left), k(Down),          k(Right),        RCBR,          PIPE],
-            &[Trans,     k(F7), k(F8), k(F9), k(F10), k(F11), Trans, Trans, k(F12),     k(End),  Trans,            Trans,           Trans,         Trans],
-            &[Trans,     Trans, Trans, Trans, Trans,  Trans,  Trans, Trans, k(PgDown),  k(PgUp), k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
+        [
+            [TILD,      EXLM,  AT,    HASH,  DLR,    PERC,   Trans, Trans, CIRC,       AMPR,    k(Up),            LPRN,           RPRN,           k(Delete)],
+            [k(Delete), k(F1), k(F2), k(F3), k(F4),  k(F5),  Trans, Trans, k(F6),      k(Left), k(Down),          k(Right),        RCBR,          PIPE],
+            [Trans,     k(F7), k(F8), k(F9), k(F10), k(F11), Trans, Trans, k(F12),     k(End),  Trans,            Trans,           Trans,         Trans],
+            [Trans,     Trans, Trans, Trans, Trans,  Trans,  Trans, Trans, k(PgDown),  k(PgUp), k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
         ],
-        &[
-            &[Trans,    k(LCtrl),  k(RShift), k(LAlt),           k(D),           k(B),                 Trans,                  Trans, Trans, Trans,                    Trans,                      Trans, Trans, Trans],
-            &[LCTL_ESC, Trans,     Trans,     m(&[LShift, F12]), k(F12),         k(N),                 Trans,                  Trans, Trans, m(&[LCtrl, LAlt, Minus]), m(&[LCtrl, LShift, Minus]), Trans, Trans, Trans],
-            &[Trans,    Trans,     Trans,     k(Delete),         m(&[LCtrl, G]), Trans,                m(&[LShift, LCtrl, Z]), Trans, Trans, Trans,                    Trans,                      Trans, Trans, Trans],
-            &[Trans,    Trans,     Trans,     Trans,             Trans,          m(&[LCtrl, Z]),       d(0),                   Trans, Trans, Trans,                    Trans,                      Trans, Trans, Trans],
+        [
+            [Trans,    k(LCtrl),  k(RShift), k(LAlt),           k(D),           k(B),                 Trans,                  Trans, Trans, Trans,                    Trans,                      Trans, Trans, Trans],
+            [LCTL_ESC, Trans,     Trans,     m(&[LShift, F12]), k(F12),         k(N),                 Trans,                  Trans, Trans, m(&[LCtrl, LAlt, Minus]), m(&[LCtrl, LShift, Minus]), Trans, Trans, Trans],
+            [Trans,    Trans,     Trans,     k(Delete),         m(&[LCtrl, G]), Trans,                m(&[LShift, LCtrl, Z]), Trans, Trans, Trans,                    Trans,                      Trans, Trans, Trans],
+            [Trans,    Trans,     Trans,     Trans,             Trans,          m(&[LCtrl, Z]),       d(0),                   Trans, Trans, Trans,                    Trans,                      Trans, Trans, Trans],
         ],
     ];
 
@@ -102,8 +102,8 @@ mod app {
     struct Local {
         led: PC13<Output<PushPull>>,
         matrix: Matrix<EPin<Input<PullUp>>, EPin<Output<PushPull>>, 14, 4>,
-        debouncer: Debouncer<PressedKeys<14, 4>>,
-        layout: Layout<()>,
+        debouncer: Debouncer<[[bool; 14]; 4]>,
+        layout: Layout<14, 4, 5, ()>,
         timer: timer::CountDownTimer<pac::TIM3>,
     }
 
@@ -201,9 +201,9 @@ mod app {
             Local {
                 led,
                 timer,
-                debouncer: Debouncer::new(PressedKeys::default(), PressedKeys::default(), 5),
+                debouncer: Debouncer::new([[false; 14]; 4], [[false; 14]; 4], 5),
                 matrix: matrix.unwrap(),
-                layout: Layout::new(LAYERS),
+                layout: Layout::new(&LAYERS),
             },
             init::Monotonics(),
         )
