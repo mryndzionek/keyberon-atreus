@@ -222,8 +222,8 @@ mod app {
     fn usb_tx(c: usb_tx::Context) {
         let r1 = c.shared.usb_dev;
         let r2 = c.shared.usb_class;
-        (r1, r2).lock(|mut dev, mut class| {
-            usb_poll(&mut dev, &mut class);
+        (r1, r2).lock(|dev, class| {
+            usb_poll(dev, class);
         });
     }
 
@@ -231,8 +231,8 @@ mod app {
     fn usb_rx(c: usb_rx::Context) {
         let r1 = c.shared.usb_dev;
         let r2 = c.shared.usb_class;
-        (r1, r2).lock(|mut dev, mut class| {
-            usb_poll(&mut dev, &mut class);
+        (r1, r2).lock(|dev, class| {
+            usb_poll(dev, class);
         });
     }
 
@@ -243,9 +243,8 @@ mod app {
         for event in c.local.debouncer.events(c.local.matrix.get().unwrap()) {
             c.local.layout.event(event);
         }
-        match c.local.layout.tick() {
-            keyberon::layout::CustomEvent::Release(()) => cortex_m::peripheral::SCB::sys_reset(),
-            _ => (),
+        if let keyberon::layout::CustomEvent::Release(()) = c.local.layout.tick() {
+            cortex_m::peripheral::SCB::sys_reset()
         }
         send_report(c.local.layout.keycodes(), &mut c.shared.usb_class);
     }
