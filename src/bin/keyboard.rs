@@ -5,7 +5,7 @@
 #[rtic::app(device = stm32f1xx_hal::pac, peripherals = true)]
 mod app {
 
-    use keyberon::action::{d, k, l, m, Action, Action::*, HoldTapConfig};
+    use keyberon::action::{d, k, l, m, Action, Action::*, HoldTapAction, HoldTapConfig};
     use keyberon::debounce::Debouncer;
     use keyberon::key_code::KeyCode::*;
     use keyberon::key_code::{KbHidReport, KeyCode};
@@ -25,38 +25,38 @@ mod app {
 
     static mut USB_BUS: Option<UsbBusAllocator<UsbBusType>> = None;
 
-    const LCTL_ESC: Action<()> = HoldTap {
+    const LCTL_ESC: Action<()> = HoldTap(&HoldTapAction {
         timeout: 200,
         tap_hold_interval: 0,
         config: HoldTapConfig::Default,
-        hold: &k(LCtrl),
-        tap: &k(Escape),
-    };
+        hold: k(LCtrl),
+        tap: k(Escape),
+    });
 
-    const RALT_EDIT: Action<()> = HoldTap {
+    const RALT_EDIT: Action<()> = HoldTap(&HoldTapAction {
         timeout: 200,
         tap_hold_interval: 0,
         config: HoldTapConfig::Default,
-        hold: &k(RAlt),
-        tap: &d(4),
-    };
+        hold: k(RAlt),
+        tap: d(4),
+    });
 
-    const TILD: Action<()> = m(&[LShift, Grave]);
-    const EXLM: Action<()> = m(&[LShift, Kb1]);
-    const AT: Action<()> = m(&[LShift, Kb2]);
-    const HASH: Action<()> = m(&[LShift, Kb3]);
-    const DLR: Action<()> = m(&[LShift, Kb4]);
-    const PERC: Action<()> = m(&[LShift, Kb5]);
-    const CIRC: Action<()> = m(&[LShift, Kb6]);
-    const AMPR: Action<()> = m(&[LShift, Kb7]);
-    const ASTR: Action<()> = m(&[LShift, Kb8]);
-    const LPRN: Action<()> = m(&[LShift, Kb9]);
-    const RPRN: Action<()> = m(&[LShift, Kb0]);
-    const UNDS: Action<()> = m(&[LShift, Minus]);
-    const PLUS: Action<()> = m(&[LShift, Equal]);
-    const LCBR: Action<()> = m(&[LShift, LBracket]);
-    const RCBR: Action<()> = m(&[LShift, RBracket]);
-    const PIPE: Action<()> = m(&[LShift, Bslash]);
+    const TILD: Action<()> = m(&[LShift, Grave].as_slice());
+    const EXLM: Action<()> = m(&[LShift, Kb1].as_slice());
+    const AT: Action<()> = m(&[LShift, Kb2].as_slice());
+    const HASH: Action<()> = m(&[LShift, Kb3].as_slice());
+    const DLR: Action<()> = m(&[LShift, Kb4].as_slice());
+    const PERC: Action<()> = m(&[LShift, Kb5].as_slice());
+    const CIRC: Action<()> = m(&[LShift, Kb6].as_slice());
+    const AMPR: Action<()> = m(&[LShift, Kb7].as_slice());
+    const ASTR: Action<()> = m(&[LShift, Kb8].as_slice());
+    const LPRN: Action<()> = m(&[LShift, Kb9].as_slice());
+    const RPRN: Action<()> = m(&[LShift, Kb0].as_slice());
+    const UNDS: Action<()> = m(&[LShift, Minus].as_slice());
+    const PLUS: Action<()> = m(&[LShift, Equal].as_slice());
+    const LCBR: Action<()> = m(&[LShift, LBracket].as_slice());
+    const RCBR: Action<()> = m(&[LShift, RBracket].as_slice());
+    const PIPE: Action<()> = m(&[LShift, Bslash].as_slice());
 
     #[rustfmt::skip]
     pub const LAYERS: keyberon::layout::Layers<14, 4, 5, ()> = [
@@ -86,9 +86,9 @@ mod app {
         ],
         [
             [Trans,    k(LCtrl),  k(RShift), k(LAlt),           k(D),           k(B),                 Trans,                  Trans, Trans, Trans,                    Trans,                      Trans, Trans, Trans],
-            [LCTL_ESC, Trans,     Trans,     m(&[LShift, F12]), k(F12),         k(N),                 Trans,                  Trans, Trans, m(&[LCtrl, LAlt, Minus]), m(&[LCtrl, LShift, Minus]), Trans, Trans, Trans],
-            [Trans,    Trans,     Trans,     k(Delete),         m(&[LCtrl, G]), Trans,                m(&[LShift, LCtrl, Z]), Trans, Trans, Trans,                    Trans,                      Trans, Trans, Trans],
-            [Trans,    Trans,     Trans,     Trans,             Trans,          m(&[LCtrl, Z]),       d(0),                   Trans, Trans, Trans,                    Trans,                      Trans, Trans, Trans],
+            [LCTL_ESC, Trans,     Trans,     m(&[LShift, F12].as_slice()), k(F12),         k(N),                 Trans,                  Trans, Trans, m(&[LCtrl, LAlt, Minus].as_slice()), m(&[LCtrl, LShift, Minus].as_slice()), Trans, Trans, Trans],
+            [Trans,    Trans,     Trans,     k(Delete),         m(&[LCtrl, G].as_slice()), Trans,                m(&[LShift, LCtrl, Z].as_slice()), Trans, Trans, Trans,                    Trans,                      Trans, Trans, Trans],
+            [Trans,    Trans,     Trans,     Trans,             Trans,          m(&[LCtrl, Z].as_slice()),       d(0),                   Trans, Trans, Trans,                    Trans,                      Trans, Trans, Trans],
         ],
     ];
 
