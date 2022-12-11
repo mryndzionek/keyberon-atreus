@@ -52,3 +52,9 @@ Make sure to copy `memory.x.bootlader` to `memory.x` and then:
 cargo objcopy --bin keyboard --release -- -O binary keyboard.bin
 ```
 
+### Flashing via bootloader
+
+```console
+dfu-util -d 1eaf:0003 -D keyboard.bin -R -a2
+```
+
