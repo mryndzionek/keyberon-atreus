@@ -2,14 +2,14 @@
 #![no_main]
 #![no_std]
 
-#[rtic::app(device = stm32f1xx_hal::pac, peripherals = true)]
+#[rtic::app(device = stm32f1xx_hal::pac, peripherals = true, dispatchers = [PVD])]
 mod app {
 
     use keyberon::action::{d, k, l, m, Action, Action::*, HoldTapAction, HoldTapConfig};
     use keyberon::debounce::Debouncer;
+    use keyberon::key_code::KbHidReport;
     use keyberon::key_code::KeyCode::*;
-    use keyberon::key_code::{KbHidReport, KeyCode};
-    use keyberon::layout::Layout;
+    use keyberon::layout::{CustomEvent, Event, Layout};
     use keyberon::matrix::Matrix;
     use keyberon_atreus as _;
 
@@ -19,6 +19,7 @@ mod app {
     use stm32f1xx_hal::{pac, timer};
     use usb_device::bus::UsbBusAllocator;
     use usb_device::class::UsbClass as _;
+    use usb_device::device::UsbDeviceState;
 
     type UsbClass = keyberon::Class<'static, UsbBusType, ()>;
     type UsbDevice = usb_device::device::UsbDevice<'static, UsbBusType>;
@@ -99,6 +100,8 @@ mod app {
     struct Shared {
         usb_dev: UsbDevice,
         usb_class: UsbClass,
+        #[lock_free]
+        layout: Layout<14, 4, 5, ()>,
     }
 
     #[local]
@@ -106,7 +109,6 @@ mod app {
         led: PC13<Output<PushPull>>,
         matrix: Matrix<EPin<Input<PullUp>>, EPin<Output<PushPull>>, 14, 4>,
         debouncer: Debouncer<[[bool; 14]; 4]>,
-        layout: Layout<14, 4, 5, ()>,
         timer: timer::CountDownTimer<pac::TIM3>,
     }
 
@@ -200,28 +202,29 @@ mod app {
         );
 
         (
-            Shared { usb_dev, usb_class },
+            Shared {
+                usb_dev,
+                usb_class,
+                layout: Layout::new(&LAYERS),
+            },
             Local {
                 led,
                 timer,
                 debouncer: Debouncer::new([[false; 14]; 4], [[false; 14]; 4], 5),
                 matrix: matrix.unwrap(),
-                layout: Layout::new(&LAYERS),
             },
             init::Monotonics(),
         )
     }
 
-    #[idle(local = [led])]
+    #[idle(local = [])]
     fn idle(_cx: idle::Context) -> ! {
         loop {
-            _cx.local.led.set_high();
             cortex_m::asm::wfi();
-            _cx.local.led.set_low();
         }
     }
 
-    #[task(binds = USB_HP_CAN_TX, priority = 2, shared = [usb_dev, usb_class])]
+    #[task(binds = USB_HP_CAN_TX, priority = 3, shared = [usb_dev, usb_class])]
     fn usb_tx(c: usb_tx::Context) {
         let r1 = c.shared.usb_dev;
         let r2 = c.shared.usb_class;
@@ -230,7 +233,7 @@ mod app {
         });
     }
 
-    #[task(binds = USB_LP_CAN_RX0, priority = 2, shared = [usb_dev, usb_class])]
+    #[task(binds = USB_LP_CAN_RX0, priority = 3, shared = [usb_dev, usb_class])]
     fn usb_rx(c: usb_rx::Context) {
         let r1 = c.shared.usb_dev;
         let r2 = c.shared.usb_class;
@@ -239,28 +242,45 @@ mod app {
         });
     }
 
-    #[task(binds = TIM3, priority = 1, local = [matrix, debouncer, layout, timer], shared = [usb_class])]
-    fn tick(mut c: tick::Context) {
+    #[task(priority = 2, capacity = 8, shared = [layout])]
+    fn handle_event(c: handle_event::Context, event: Event) {
+        c.shared.layout.event(event)
+    }
+
+    #[task(priority = 2, local = [led], shared = [usb_dev, usb_class, layout])]
+    fn tick_keyberon(mut c: tick_keyberon::Context) {
+        if c.shared.layout.current_layer() == 4 {
+            c.local.led.set_low()
+        } else {
+            c.local.led.set_high()
+        };
+        let tick = c.shared.layout.tick();
+        if c.shared.usb_dev.lock(|d| d.state()) != UsbDeviceState::Configured {
+            return;
+        }
+        match tick {
+            CustomEvent::Release(()) => unsafe { cortex_m::asm::bootload(0x1FFFC800 as _) },
+            _ => (),
+        }
+        let report: KbHidReport = c.shared.layout.keycodes().collect();
+        if !c
+            .shared
+            .usb_class
+            .lock(|k| k.device_mut().set_keyboard_report(report.clone()))
+        {
+            return;
+        }
+        while let Ok(0) = c.shared.usb_class.lock(|k| k.write(report.as_bytes())) {}
+    }
+
+    #[task(binds = TIM3, priority = 1, local = [matrix, debouncer, timer])]
+    fn tick(c: tick::Context) {
         c.local.timer.clear_update_interrupt_flag();
 
         for event in c.local.debouncer.events(c.local.matrix.get().unwrap()) {
-            c.local.layout.event(event);
+            handle_event::spawn(event).unwrap();
         }
-        if let keyberon::layout::CustomEvent::Release(()) = c.local.layout.tick() {
-            cortex_m::peripheral::SCB::sys_reset()
-        }
-        send_report(c.local.layout.keycodes(), &mut c.shared.usb_class);
-    }
-
-    fn send_report(
-        iter: impl Iterator<Item = KeyCode>,
-        usb_class: &mut shared_resources::usb_class_that_needs_to_be_locked<'_>,
-    ) {
-        use rtic::Mutex;
-        let report: KbHidReport = iter.collect();
-        if usb_class.lock(|k| k.device_mut().set_keyboard_report(report.clone())) {
-            while let Ok(0) = usb_class.lock(|k| k.write(report.as_bytes())) {}
-        }
+        tick_keyberon::spawn().unwrap();
     }
 
     fn usb_poll(usb_dev: &mut UsbDevice, keyboard: &mut UsbClass) {
