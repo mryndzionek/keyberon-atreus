@@ -57,6 +57,9 @@ mod app {
     const LCBR: Action<()> = m(&[LShift, LBracket].as_slice());
     const RCBR: Action<()> = m(&[LShift, RBracket].as_slice());
     const PIPE: Action<()> = m(&[LShift, Bslash].as_slice());
+    const COPY: Action<()> = m(&[LCtrl, C].as_slice());
+    const PASTE: Action<()> = m(&[LCtrl, V].as_slice());
+    const VSFMT: Action<()> = m(&[LCtrl, K, F].as_slice());
 
     #[rustfmt::skip]
     pub const LAYERS: keyberon::layout::Layers<14, 4, 5, ()> = [
@@ -85,10 +88,10 @@ mod app {
             [Trans,     Trans, Trans, Trans, Trans,  Trans,  Trans, Trans, k(PgDown),  k(PgUp), k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
         ],
         [
-            [Trans,    k(LCtrl),  k(RShift), k(LAlt),           k(D),           k(B),                 Trans,                  Trans, Trans, Trans,                    Trans,                      Trans, Trans, Trans],
-            [LCTL_ESC, Trans,     Trans,     m(&[LShift, F12].as_slice()), k(F12),         k(N),                 Trans,                  Trans, Trans, m(&[LCtrl, LAlt, Minus].as_slice()), m(&[LCtrl, LShift, Minus].as_slice()), Trans, Trans, Trans],
-            [Trans,    Trans,     Trans,     k(Delete),         m(&[LCtrl, G].as_slice()), Trans,                m(&[LShift, LCtrl, Z].as_slice()), Trans, Trans, Trans,                    Trans,                      Trans, Trans, Trans],
-            [Trans,    Trans,     Trans,     Trans,             Trans,          m(&[LCtrl, Z].as_slice()),       d(0),                   Trans, Trans, Trans,                    Trans,                      Trans, Trans, Trans],
+            [k(Tab),    k(Q),     k(W),    k(E),    k(R),  k(T),     Trans, Trans,     k(Y),      k(U), k(I),     k(O),    k(P),      k(Minus)],
+            [LCTL_ESC,  k(A),     k(S),    PASTE,   COPY,  k(G),     Trans, Trans,     k(H),      k(J), k(K),     k(L),    k(SColon), k(Quote)],
+            [k(LShift), k(Z),     k(X),    k(C),    VSFMT, k(B),     l(3),  k(RShift), k(N),      k(M), k(Comma), k(Dot),  k(Slash),  k(Enter)],
+            [k(Grave),  k(LCtrl), k(LAlt), k(LGui), l(1),  k(Space), d(0),  k(RAlt),   k(BSpace), l(2), k(Left),  k(Down), k(Up),     k(Right)],
         ],
     ];
 
