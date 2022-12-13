@@ -28,6 +28,7 @@ jobs:
 
       - name: Build
         run: |
+          echo "xxx" > tel.txt
           cargo install cargo-binutils flip-link
           cargo build --bin keyboard --target=thumbv7m-none-eabi
           cargo objcopy --bin keyboard --release --target=thumbv7m-none-eabi -- -O binary keyboard.bin

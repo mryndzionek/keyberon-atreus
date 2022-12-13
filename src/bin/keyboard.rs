@@ -20,11 +20,15 @@ mod app {
     use usb_device::bus::UsbBusAllocator;
     use usb_device::class::UsbClass as _;
     use usb_device::device::UsbDeviceState;
+    use usb_device::prelude::{UsbDeviceBuilder, UsbVidPid};
 
     type UsbClass = keyberon::Class<'static, UsbBusType, ()>;
     type UsbDevice = usb_device::device::UsbDevice<'static, UsbBusType>;
 
     static mut USB_BUS: Option<UsbBusAllocator<UsbBusType>> = None;
+
+    const VID: u16 = 0x16c0;
+    const PID: u16 = 0x27db;
 
     const LCTL_ESC: Action<()> = HoldTap(&HoldTapAction {
         timeout: 200,
@@ -167,8 +171,13 @@ mod app {
             USB_BUS.as_ref().unwrap()
         };
 
+        let tel = concat!("When found call: ", include_str!("../../tel.txt"));
         let usb_class = keyberon::new_class(usb_bus, ());
-        let usb_dev = keyberon::new_device(usb_bus);
+        let usb_dev = UsbDeviceBuilder::new(usb_bus, UsbVidPid(VID, PID))
+            .manufacturer(&tel[0..tel.len() - 1])
+            .product("Atreus_52")
+            .serial_number(env!("CARGO_PKG_VERSION"))
+            .build();
 
         let mut timer = timer::Timer::tim3(c.device.TIM3, &clocks).start_count_down(1.khz());
         timer.listen(timer::Event::Update);
