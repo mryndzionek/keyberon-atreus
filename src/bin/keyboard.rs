@@ -113,7 +113,7 @@ mod app {
         led: PC13<Output<PushPull>>,
         matrix: Matrix<EPin<Input<PullUp>>, EPin<Output<PushPull>>, 14, 4>,
         debouncer: Debouncer<[[bool; 14]; 4]>,
-        timer: timer::CountDownTimer<pac::TIM3>,
+        timer: timer::CounterHz<pac::TIM3>,
     }
 
     #[init]
@@ -139,9 +139,9 @@ mod app {
 
         let clocks = rcc
             .cfgr
-            .use_hse(8.mhz())
-            .sysclk(72.mhz())
-            .pclk1(36.mhz())
+            .use_hse(8.MHz())
+            .sysclk(72.MHz())
+            .pclk1(36.MHz())
             .freeze(&mut flash.acr);
 
         let mut gpioa = c.device.GPIOA.split();
@@ -152,7 +152,7 @@ mod app {
         // Pull the D+ pin down to send a RESET condition to the USB bus.
         let mut usb_dp = gpioa.pa12.into_push_pull_output(&mut gpioa.crh);
         usb_dp.set_low();
-        cortex_m::asm::delay(clocks.sysclk().0 / 100);
+        cortex_m::asm::delay(clocks.sysclk().raw() / 100);
 
         let mut led = gpioc.pc13.into_push_pull_output(&mut gpioc.crh);
         led.set_high();
@@ -179,7 +179,8 @@ mod app {
             .serial_number(env!("CARGO_PKG_VERSION"))
             .build();
 
-        let mut timer = timer::Timer::tim3(c.device.TIM3, &clocks).start_count_down(1.khz());
+        let mut timer = c.device.TIM3.counter_hz(&clocks);
+        timer.start(1.kHz()).unwrap();
         timer.listen(timer::Event::Update);
 
         let mut afio = c.device.AFIO.constrain();
@@ -284,12 +285,11 @@ mod app {
 
     #[task(binds = TIM3, priority = 1, local = [matrix, debouncer, timer])]
     fn tick(c: tick::Context) {
-        c.local.timer.clear_update_interrupt_flag();
-
         for event in c.local.debouncer.events(c.local.matrix.get().unwrap()) {
             handle_event::spawn(event).unwrap();
         }
         tick_keyberon::spawn().unwrap();
+        c.local.timer.clear_interrupt(timer::Event::Update);
     }
 
     fn usb_poll(usb_dev: &mut UsbDevice, keyboard: &mut UsbClass) {
