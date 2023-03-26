@@ -65,6 +65,8 @@ mod app {
     const COPY: Action<()> = m(&[LCtrl, C].as_slice());
     const PASTE: Action<()> = m(&[LCtrl, V].as_slice());
     const VSFMT: Action<()> = m(&[LCtrl, K, F].as_slice());
+    const WSCP_LEFT: Action<()> = m(&[LCtrl, LAlt, Left].as_slice());
+    const WSCP_RIGHT: Action<()> = m(&[LCtrl, LAlt, Right].as_slice());
 
     #[rustfmt::skip]
     pub const LAYERS: keyberon::layout::Layers<14, 4, 5, ()> = [
@@ -87,10 +89,10 @@ mod app {
             [Trans,     Trans,  Trans,  Trans,  Trans,  Trans,  Trans, Trans, Trans,  Trans,    k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
         ],
         [
-            [TILD,      EXLM,  AT,    HASH,  DLR,    PERC,   Trans, Trans, CIRC,       AMPR,    k(Up),            LPRN,           RPRN,           k(Delete)],
-            [k(Delete), k(F1), k(F2), k(F3), k(F4),  k(F5),  Trans, Trans, k(F6),      k(Left), k(Down),          k(Right),        RCBR,          PIPE],
-            [Trans,     k(F7), k(F8), k(F9), k(F10), k(F11), Trans, Trans, k(F12),     k(End),  Trans,            Trans,           Trans,         Trans],
-            [Trans,     Trans, Trans, Trans, Trans,  Trans,  Trans, Trans, k(PgDown),  k(PgUp), k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
+            [TILD,      EXLM,  AT,    HASH,      DLR,         PERC,   Trans, Trans, CIRC,      AMPR,    k(Up),            LPRN,           RPRN,           k(Delete)],
+            [k(LAlt),   k(F1), k(F2), WSCP_LEFT, WSCP_RIGHT,  k(F5),  Trans, Trans, k(F6),     k(Left), k(Down),          k(Right),        RCBR,          PIPE],
+            [Trans,     k(F7), k(F8), k(F9),     k(F10),      k(F11), Trans, Trans, k(F12),    k(End),  Trans,            Trans,           Trans,         Trans],
+            [Trans,     Trans, Trans, Trans,     Trans,       Trans,  Trans, Trans, k(PgDown), k(PgUp), k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
         ],
         [
             [k(Tab),    k(Q),     k(W),    k(E),    k(R),  k(T),     Trans, Trans,     k(Y),      k(U), k(I),     k(O),    k(P),      k(Minus)],
