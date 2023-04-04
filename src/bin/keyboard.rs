@@ -71,10 +71,10 @@ mod app {
     #[rustfmt::skip]
     pub const LAYERS: keyberon::layout::Layers<14, 4, 5, ()> = [
         [
-            [k(Tab),    k(Q),     k(W),    k(E),    k(R), k(T),     Trans,     Trans,     k(Y),      k(U), k(I),     k(O),    k(P),      k(Minus)],
-            [LCTL_ESC,  k(A),     k(S),    k(D),    k(F), k(G),     Trans,     Trans,     k(H),      k(J), k(K),     k(L),    k(SColon), k(Quote)],
-            [k(LShift), k(Z),     k(X),    k(C),    k(V), k(B),     l(3),      k(RShift), k(N),      k(M), k(Comma), k(Dot),  k(Slash),  k(Enter)],
-            [k(Grave),  k(LCtrl), k(LAlt), k(LGui), l(1), k(Space), RALT_EDIT, k(RAlt),   k(BSpace), l(2), k(Left),  k(Down), k(Up),     k(Right)],
+            [k(Tab),    k(SColon), k(Comma), k(Dot),  k(P), k(Y),     Trans,     Trans,     k(F),      k(G), k(C),    k(R),    k(L),  k(Minus)],
+            [LCTL_ESC,  k(A),      k(O),     k(E),    k(U), k(I),     Trans,     Trans,     k(D),      k(H), k(T),    k(N),    k(S),  k(Quote)],
+            [k(LShift), k(Quote),  k(Q),     k(J),    k(K), k(X),     l(3),      k(RShift), k(B),      k(M), k(W),    k(V),    k(Z),  k(Enter)],
+            [k(Grave),  k(LCtrl),  k(LAlt),  k(LGui), l(1), k(Space), RALT_EDIT, k(RAlt),   k(BSpace), l(2), k(Left), k(Down), k(Up), k(Right)],
         ],
         [
             [TILD,      EXLM,  AT,    HASH,  DLR,    PERC,   Trans, Trans, CIRC,   AMPR,   ASTR,             LPRN,            RPRN,          k(Delete)],
@@ -89,16 +89,16 @@ mod app {
             [Trans,     Trans,  Trans,  Trans,  Trans,  Trans,  Trans, Trans, Trans,  Trans,    k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
         ],
         [
-            [TILD,      EXLM,  AT,    HASH,      DLR,         PERC,   Trans, Trans, CIRC,      AMPR,    k(Up),            LPRN,           RPRN,           k(Delete)],
+            [TILD,      EXLM,  AT,    HASH,      DLR,         PERC,   Trans, Trans, CIRC,      AMPR,    k(Up),            LPRN,            RPRN,          k(Delete)],
             [k(LAlt),   k(F1), k(F2), WSCP_LEFT, WSCP_RIGHT,  k(F5),  Trans, Trans, k(F6),     k(Left), k(Down),          k(Right),        RCBR,          PIPE],
             [Trans,     k(F7), k(F8), k(F9),     k(F10),      k(F11), Trans, Trans, k(F12),    k(End),  Trans,            Trans,           Trans,         Trans],
             [Trans,     Trans, Trans, Trans,     Trans,       Trans,  Trans, Trans, k(PgDown), k(PgUp), k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
         ],
         [
-            [k(Tab),    k(Q),     k(W),    k(E),    k(R),  k(T),     Trans, Trans,     k(Y),      k(U), k(I),     k(O),    k(P),      k(Minus)],
-            [LCTL_ESC,  k(A),     k(S),    PASTE,   COPY,  k(G),     Trans, Trans,     k(H),      k(J), k(K),     k(L),    k(SColon), k(Quote)],
-            [k(LShift), k(Z),     k(X),    k(C),    VSFMT, k(B),     l(3),  k(RShift), k(N),      k(M), k(Comma), k(Dot),  k(Slash),  k(Enter)],
-            [k(Grave),  k(LCtrl), k(LAlt), k(LGui), l(1),  k(Space), d(0),  k(RAlt),   k(BSpace), l(2), k(Left),  k(Down), k(Up),     k(Right)],
+            [k(Tab),    k(SColon), k(Comma), k(Dot),  k(P),  k(Y),     Trans, Trans,     k(F),      k(G), k(C),     k(R),    k(L),     k(Minus)],
+            [LCTL_ESC,  k(A),      k(O),     PASTE,   COPY,  k(I),     Trans, Trans,     k(D),      k(H), k(T),     k(N),    k(S),     k(Quote)],
+            [k(LShift), k(Quote),  k(Q),     k(J),    VSFMT, k(X),     l(3),  k(RShift), k(B),      k(M), k(Comma), k(Dot),  k(Slash), k(Enter)],
+            [k(Grave),  k(LCtrl), k(LAlt),   k(LGui), l(1),  k(Space), d(0),  k(RAlt),   k(BSpace), l(2), k(Left),  k(Down), k(Up),    k(Right)],
         ],
     ];
 
