@@ -38,6 +38,14 @@ mod app {
         tap: k(Escape),
     });
 
+    const LCTL_SLASH: Action<()> = HoldTap(&HoldTapAction {
+        timeout: 200,
+        tap_hold_interval: 0,
+        config: HoldTapConfig::HoldOnOtherKeyPress,
+        hold: k(LCtrl),
+        tap: k(Slash),
+    });
+
     const RALT_EDIT: Action<()> = HoldTap(&HoldTapAction {
         timeout: 140,
         tap_hold_interval: 0,
@@ -67,12 +75,14 @@ mod app {
     const VSFMT: Action<()> = m(&[LCtrl, K, F].as_slice());
     const WSCP_LEFT: Action<()> = m(&[LCtrl, LAlt, Left].as_slice());
     const WSCP_RIGHT: Action<()> = m(&[LCtrl, LAlt, Right].as_slice());
+    const BACK: Action<()> = m(&[LCtrl, LAlt, Minus].as_slice());
+    const FORWD: Action<()> = m(&[LCtrl, LShift, Minus].as_slice());
 
     #[rustfmt::skip]
     pub const LAYERS: keyberon::layout::Layers<14, 4, 5, ()> = [
         [
             [k(Tab),    k(SColon), k(Comma), k(Dot),  k(P), k(Y),     Trans,     Trans,     k(F),      k(G), k(C),    k(R),    k(L),  k(Minus)],
-            [LCTL_ESC,  k(A),      k(O),     k(E),    k(U), k(I),     Trans,     Trans,     k(D),      k(H), k(T),    k(N),    k(S),  k(Quote)],
+            [LCTL_ESC,  k(A),      k(O),     k(E),    k(U), k(I),     Trans,     Trans,     k(D),      k(H), k(T),    k(N),    k(S),  LCTL_SLASH],
             [k(LShift), k(Quote),  k(Q),     k(J),    k(K), k(X),     l(3),      k(RShift), k(B),      k(M), k(W),    k(V),    k(Z),  k(Enter)],
             [k(Grave),  k(LCtrl),  k(LAlt),  k(LGui), l(1), k(Space), RALT_EDIT, k(RAlt),   k(BSpace), l(2), k(Left), k(Down), k(Up), k(Right)],
         ],
@@ -89,9 +99,9 @@ mod app {
             [Trans,     Trans,  Trans,  Trans,  Trans,  Trans,  Trans, Trans, Trans,  Trans,    k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
         ],
         [
-            [TILD,      EXLM,  AT,    HASH,      DLR,         PERC,   Trans, Trans, CIRC,      AMPR,    k(Up),            LPRN,            RPRN,          k(Delete)],
+            [TILD,      EXLM,  AT,    BACK,      FORWD,       PERC,   Trans, Trans, CIRC,      AMPR,    k(Up),            LPRN,            RPRN,          k(Delete)],
             [k(LAlt),   k(F1), k(F2), WSCP_LEFT, WSCP_RIGHT,  k(F5),  Trans, Trans, k(F6),     k(Left), k(Down),          k(Right),        RCBR,          PIPE],
-            [Trans,     k(F7), k(F8), k(F9),     k(F10),      k(F11), Trans, Trans, k(F12),    k(End),  Trans,            Trans,           Trans,         Trans],
+            [Trans,     k(F7), k(F8), k(F9),     k(F10),      k(F11), Trans, Trans, k(F12),    k(Home), k(End),           Trans,           Trans,         Trans],
             [Trans,     Trans, Trans, Trans,     Trans,       Trans,  Trans, Trans, k(PgDown), k(PgUp), k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
         ],
         [
