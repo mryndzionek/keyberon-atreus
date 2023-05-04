@@ -5,7 +5,7 @@
 #[rtic::app(device = stm32f1xx_hal::pac, peripherals = true, dispatchers = [PVD])]
 mod app {
 
-    use keyberon::action::{d, k, l, m, Action, Action::*, HoldTapAction, HoldTapConfig};
+    use keyberon::action::{k, l, m, Action, Action::*, HoldTapAction, HoldTapConfig};
     use keyberon::debounce::Debouncer;
     use keyberon::key_code::KbHidReport;
     use keyberon::key_code::KeyCode::*;
@@ -46,14 +46,6 @@ mod app {
         tap: k(Slash),
     });
 
-    const RALT_EDIT: Action<()> = HoldTap(&HoldTapAction {
-        timeout: 140,
-        tap_hold_interval: 0,
-        config: HoldTapConfig::HoldOnOtherKeyPress,
-        hold: k(RAlt),
-        tap: d(4),
-    });
-
     const TILD: Action<()> = m(&[LShift, Grave].as_slice());
     const EXLM: Action<()> = m(&[LShift, Kb1].as_slice());
     const AT: Action<()> = m(&[LShift, Kb2].as_slice());
@@ -70,21 +62,18 @@ mod app {
     const LCBR: Action<()> = m(&[LShift, LBracket].as_slice());
     const RCBR: Action<()> = m(&[LShift, RBracket].as_slice());
     const PIPE: Action<()> = m(&[LShift, Bslash].as_slice());
-    const COPY: Action<()> = m(&[LCtrl, C].as_slice());
-    const PASTE: Action<()> = m(&[LCtrl, V].as_slice());
-    const VSFMT: Action<()> = m(&[LCtrl, K, F].as_slice());
     const WSCP_LEFT: Action<()> = m(&[LCtrl, LAlt, Left].as_slice());
     const WSCP_RIGHT: Action<()> = m(&[LCtrl, LAlt, Right].as_slice());
     const BACK: Action<()> = m(&[LCtrl, LAlt, Minus].as_slice());
     const FORWD: Action<()> = m(&[LCtrl, LShift, Minus].as_slice());
 
     #[rustfmt::skip]
-    pub const LAYERS: keyberon::layout::Layers<14, 4, 5, ()> = [
+    pub const LAYERS: keyberon::layout::Layers<14, 4, 4, ()> = [
         [
-            [k(Tab),    k(SColon), k(Comma), k(Dot),  k(P), k(Y),     Trans,     Trans,     k(F),      k(G), k(C),    k(R),    k(L),  k(Minus)],
-            [LCTL_ESC,  k(A),      k(O),     k(E),    k(U), k(I),     Trans,     Trans,     k(D),      k(H), k(T),    k(N),    k(S),  LCTL_SLASH],
-            [k(LShift), k(Quote),  k(Q),     k(J),    k(K), k(X),     l(3),      k(RShift), k(B),      k(M), k(W),    k(V),    k(Z),  k(Enter)],
-            [k(Grave),  k(LCtrl),  k(LAlt),  k(LGui), l(1), k(Space), RALT_EDIT, k(RAlt),   k(BSpace), l(2), k(Left), k(Down), k(Up), k(Right)],
+            [k(Tab),    k(SColon), k(Comma), k(Dot),  k(P), k(Y),     Trans,   Trans,     k(F),      k(G), k(C),    k(R),    k(L),  k(Minus)],
+            [LCTL_ESC,  k(A),      k(O),     k(E),    k(U), k(I),     Trans,   Trans,     k(D),      k(H), k(T),    k(N),    k(S),  LCTL_SLASH],
+            [k(LShift), k(Quote),  k(Q),     k(J),    k(K), k(X),     l(3),    k(RShift), k(B),      k(M), k(W),    k(V),    k(Z),  k(Enter)],
+            [k(Grave),  k(LCtrl),  k(LAlt),  k(LGui), l(1), k(Space), k(RAlt), k(RAlt),   k(BSpace), l(2), k(Left), k(Down), k(Up), k(Right)],
         ],
         [
             [TILD,      EXLM,  AT,    HASH,  DLR,    PERC,   Trans, Trans, CIRC,   AMPR,   ASTR,             LPRN,            RPRN,          k(Delete)],
@@ -104,12 +93,6 @@ mod app {
             [Trans,     k(F7), k(F8), k(F9),     k(F10),      k(F11), Trans, Trans, k(F12),    k(Home), k(End),           Trans,           Trans,         Trans],
             [Trans,     Trans, Trans, Trans,     Trans,       Trans,  Trans, Trans, k(PgDown), k(PgUp), k(MediaNextSong), k(MediaVolDown), k(MediaVolUp), k(MediaPlayPause)],
         ],
-        [
-            [k(Tab),    k(SColon), k(Comma), k(Dot),  k(P),  k(Y),     Trans, Trans,     k(F),      k(G), k(C),     k(R),    k(L),     k(Minus)],
-            [LCTL_ESC,  k(A),      k(O),     PASTE,   COPY,  k(I),     Trans, Trans,     k(D),      k(H), k(T),     k(N),    k(S),     k(Quote)],
-            [k(LShift), k(Quote),  k(Q),     k(J),    VSFMT, k(X),     l(3),  k(RShift), k(B),      k(M), k(Comma), k(Dot),  k(Slash), k(Enter)],
-            [k(Grave),  k(LCtrl), k(LAlt),   k(LGui), l(1),  k(Space), d(0),  k(RAlt),   k(BSpace), l(2), k(Left),  k(Down), k(Up),    k(Right)],
-        ],
     ];
 
     #[shared]
@@ -117,7 +100,7 @@ mod app {
         usb_dev: UsbDevice,
         usb_class: UsbClass,
         #[lock_free]
-        layout: Layout<14, 4, 5, ()>,
+        layout: Layout<14, 4, 4, ()>,
     }
 
     #[local]
